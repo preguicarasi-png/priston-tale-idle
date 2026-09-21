@@ -62,8 +62,8 @@ func _ready() -> void:
 		_show_import_overlay()
 		return
 	_load_save()
-	_spawn_hero()
-	_spawn_enemy()
+	await _spawn_hero()
+	await _spawn_enemy()
 	_refresh_ui()
 
 func _process(delta: float) -> void:
@@ -581,12 +581,13 @@ func _refresh_inventory_ui() -> void:
 	for i in range(min(player_files.size(),4)):
 		var b := Button.new()
 		b.text = ("✓ " if i==current_armor else "") + player_files[i].get_file().get_basename()
-		b.pressed.connect(func(index=i):
-			current_armor=index
-			_spawn_hero()
-			_save_game()
-		)
+		b.pressed.connect(_equip_armor_index.bind(i))
 		inventory_box.add_child(b)
+
+func _equip_armor_index(index: int) -> void:
+	current_armor = index
+	_spawn_hero()
+	_save_game()
 
 func _refresh_quests() -> void:
 	if quest_box == null:
