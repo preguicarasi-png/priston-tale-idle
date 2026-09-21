@@ -1,0 +1,7 @@
+.godot/
+.import/
+assets/imported/*
+!assets/imported/.gitkeep
+tools/_converter/
+savegame.json
+*.tmp
